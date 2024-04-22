@@ -8,6 +8,10 @@ model_path = 'TrainedModels/best_genome.pkl'
 with open(model_path, 'rb') as f:
     winner = pickle.load(f)
 
+config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
+                        neat.DefaultSpeciesSet, neat.DefaultStagnation,
+                        'config/neat_config.txt')
+
 # Create a neural network from the winner genome
 net = neat.nn.FeedForwardNetwork.create(winner, config)
 
