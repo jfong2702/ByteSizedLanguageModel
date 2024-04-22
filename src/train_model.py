@@ -10,11 +10,11 @@ import os
 GENERATIONS = 100
 
 # GPU accelleration
-# Initialize TensorFlow to utilize GPU (if available)
-physical_devices = tf.config.list_physical_devices('GPU')
-if physical_devices:
-    print("Using", physical_devices)
-    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+# Initialize TensorFlow to utilize GPU (if available) only works for python 3.9-3.11
+# physical_devices = tf.config.list_physical_devices('GPU')
+# if physical_devices:
+#     print("Using", physical_devices)
+#     tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 curr_path = os.getcwd()
 file_path = os.path.join(curr_path, "dataset\\Tweets.csv")
