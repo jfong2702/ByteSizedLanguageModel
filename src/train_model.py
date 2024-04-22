@@ -3,11 +3,18 @@ import numpy as np
 import pickle
 from data import Data
 from sklearn.feature_extraction.text import TfidfVectorizer
-import TensorFlow as tf
+import tensorflow as tf
 import os
 
 # Model Generations
-GENERATIONS = 1000
+GENERATIONS = 100
+
+# GPU accelleration
+# Initialize TensorFlow to utilize GPU (if available)
+physical_devices = tf.config.list_physical_devices('GPU')
+if physical_devices:
+    print("Using", physical_devices)
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 curr_path = os.getcwd()
 file_path = os.path.join(curr_path, "dataset\\Tweets.csv")
