@@ -7,7 +7,7 @@ import tensorflow as tf
 import os
 
 # Model Generations
-GENERATIONS = 100
+GENERATIONS = 1
 
 # GPU accelleration
 # Initialize TensorFlow to utilize GPU (if available) only works for python 3.9-3.11
@@ -26,15 +26,28 @@ vectorizer = TfidfVectorizer()
 corpus = ["This is an example.", "Another example example."]
 vectorizer.fit(corpus)
 
-# Initialize TensorFlow to utilize GPU (if available)
-physical_devices = tf.config.list_physical_devices('GPU')
-if physical_devices:
-    tf.config.experimental.set_memory_growth(physical_devices[0], True)
-
 def get_vectorizer():
     return vectorizer
 
 def eval_genomes(genomes, config):
+    for genome_id, genome in genomes:
+        genome.fitness = 0.0
+        net = neat.nn.FeedForwardNetwork.create(genome, config)
+        
+        # Iterate through each tweet
+        for tweet in tweets:
+            input_vec = text_to_vector(tweet)
+            output_vec = text_to_vector(tweet)  # Output is the same as input for this example
+
+            # Calculate the output of the neural network
+            output = net.activate(input_vec)
+            
+            # Calculate a meaningful fitness metric
+            cosine_similarity = np.dot(output, output_vec) / (np.linalg.norm(output) * np.linalg.norm(output_vec))
+            genome.fitness += cosine_similarity
+            
+        # Normalize fitness by the number of tweets
+        genome.fitness /= len(tweets)
 
     for genome_id, genome in genomes:
         genome.fitness = 0.0
