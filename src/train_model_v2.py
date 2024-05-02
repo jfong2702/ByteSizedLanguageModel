@@ -54,12 +54,20 @@ def eval_genomes(genomes, config):
 
             output = net.activate(input_vec)
 
-            # Calculate a meaningful fitness metric
-            cosine_similarity = np.dot(output, target_vec) / (np.linalg.norm(output) * np.linalg.norm(target_vec))
+            # Calculate cosine similarity with handling for zero denominator
+            dot_product = np.dot(output, target_vec)
+            output_norm = np.linalg.norm(output)
+            target_norm = np.linalg.norm(target_vec)
+            if output_norm == 0 or target_norm == 0:
+                cosine_similarity = 0
+            else:
+                cosine_similarity = dot_product / (output_norm * target_norm)
+
             genome.fitness += cosine_similarity
 
         # Normalize fitness by the number of tweets
         genome.fitness /= len(train_tweets)
+
 
 def run(config_file):
     # Load configuration.

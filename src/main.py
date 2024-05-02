@@ -33,7 +33,8 @@ def vector_to_text(vector, vectorizer):
     feature_names = vectorizer.get_feature_names_out()
 
     # Sort vector indices by value to identify important words
-    sorted_indices = np.array(vector).argsort()[::-1]
+    sorted_indices = np.argsort(vector)[::-1]
+
 
     # Extract top words from the vector
     top_words = [feature_names[i] for i in sorted_indices if vector[i] > 0]
